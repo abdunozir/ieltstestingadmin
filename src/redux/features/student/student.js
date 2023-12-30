@@ -76,8 +76,7 @@ const studentSlice = createSlice({
     });
 
     builder.addCase(fetchStudents.fulfilled, (state, action) => {
-      (state.loading = false),
-        (state.student = [...state.student, ...action.payload.student]);
+      (state.loading = false), (state.student = action.payload.student);
     });
 
     builder.addCase(fetchStudents.rejected, (state, action) => {
