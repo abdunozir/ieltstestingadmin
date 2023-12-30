@@ -7,7 +7,7 @@ export async function POST(req) {
   try {
     await connect();
     let body = await req.json();
-
+    console.log(body);
     let partOne = await PartOne.create({
       questions: [...body.questions],
       thinkingTime: {
@@ -15,8 +15,8 @@ export async function POST(req) {
         count_type: body.thinkingTime.count_type,
       },
       speakingTime: {
-        count: body.thinkingTime.count,
-        count_type: body.thinkingTime.count_type,
+        count: body.speakingTime.count,
+        count_type: body.speakingTime.count_type,
       },
       isPremium: body.isPremium,
     });

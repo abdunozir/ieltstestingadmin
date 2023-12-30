@@ -2,7 +2,9 @@ import axios from "axios";
 
 const API = {
   async part_one(info) {
+    console.log(info);
     let { data } = await axios.post("/api/part_one", info);
+    console.log(data);
     return data;
   },
   async part_two(info) {

@@ -16,8 +16,8 @@ export async function POST(req) {
           count_type: body.part_two.thinkingTime.count_type,
         },
         speakingTime: {
-          count: body.part_two.thinkingTime.count,
-          count_type: body.part_two.thinkingTime.count_type,
+          count: body.part_two.speakingTime.count,
+          count_type: body.part_two.speakingTime.count_type,
         },
         isPremium: body.part_two.isPremium,
       },
@@ -30,8 +30,8 @@ export async function POST(req) {
           count_type: body.part_three.thinkingTime.count_type,
         },
         speakingTime: {
-          count: body.part_three.thinkingTime.count,
-          count_type: body.part_three.thinkingTime.count_type,
+          count: body.part_three.speakingTime.count,
+          count_type: body.part_three.speakingTime.count_type,
         },
         isPremium: body.part_three.isPremium,
       },
