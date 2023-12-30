@@ -31,7 +31,7 @@ export default function Page() {
     // getCount();
 
     dispatch(fetchStudents());
-  }, []);
+  }, [dispatch]);
 
   useCallback(() => {}, [count]);
 
