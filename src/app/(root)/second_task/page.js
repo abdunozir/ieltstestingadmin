@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CustomModal from "@/app/components/modal/CustomModal";
 
-export default function page() {
+export default function Page() {
   let [loading, setLoading] = useState(false);
   let [keyWord, setKeyWord] = useState("");
   let [info, setInfo] = useState([

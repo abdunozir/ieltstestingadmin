@@ -13,7 +13,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 
-export default function page() {
+export default function Page() {
   // let [students, setStudents] = useState(null);
   const notify = (text) => toast(text);
 

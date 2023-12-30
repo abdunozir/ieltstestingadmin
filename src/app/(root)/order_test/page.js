@@ -3,7 +3,7 @@ import API from "@/app/components/api/Api";
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
   let [loading, setLoading] = useState();
   let [date, setDate] = useState({
     hour: null,

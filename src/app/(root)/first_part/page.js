@@ -9,7 +9,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import TextFields from "@/app/components/TextFields/TextFields";
 import API from "@/app/components/api/Api";
 
-function page() {
+function Page() {
   let [loading, setLoading] = useState(false);
   let [info, setInfo] = useState([
     {
