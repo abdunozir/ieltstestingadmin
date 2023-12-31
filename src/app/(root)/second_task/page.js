@@ -34,13 +34,13 @@ export default function Page() {
     let data = await API.part_two({
       part_two: {
         questions: [
-          {
-            question: info.reduce((accumulator, currentValue) => {
-              if (currentValue.question.length > 0) {
-                return accumulator + " " + currentValue.question;
-              }
-            }, ""),
-          },
+          ...info.map((el) => {
+            if (el?.question?.length > 0) {
+              return {
+                question: el.question,
+              };
+            }
+          }),
         ],
 
         thinkingTime: {
