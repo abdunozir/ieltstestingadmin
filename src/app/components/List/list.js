@@ -23,8 +23,8 @@ export default function List({ el, i }) {
         <ol className="border-l-2 border-slate-500 pl-10">
           {el.questions.map((quest, num) => {
             return (
-              <li key={quest._id}>
-                {num + 1}. {quest.question}
+              <li key={num}>
+                {num + 1}. {quest?.question}
               </li>
             );
           })}
