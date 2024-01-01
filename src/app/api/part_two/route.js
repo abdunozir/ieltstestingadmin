@@ -53,9 +53,26 @@ export async function GET() {
   try {
     let partTwo = await PartTwo.find();
 
-    NextResponse.json({
+    return NextResponse.json({
       succes: true,
-      partOne: partTwo,
+      partTwo: partTwo,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      error: true,
+      message: error.message,
+    });
+  }
+}
+export async function DELETE(req) {
+  try {
+    let url = new URL(req.url);
+    let id = url.searchParams.get("id");
+    let deleted = await PartTwo.deleteOne({ _id: id });
+
+    return NextResponse.json({
+      isDeleted: true,
+      deleted: deleted,
     });
   } catch (error) {
     return NextResponse.json({

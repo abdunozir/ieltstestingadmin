@@ -1,252 +1,84 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { IconButton, Tooltip } from "@mui/material";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import TextFields from "@/app/components/TextFields/TextFields";
-import API from "@/app/components/api/Api";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import CustomModal from "@/app/components/modal/CustomModal";
+import PartTwoList from "@/app/components/List/partTwoList.js";
+import { getPartTwo } from "@/redux/features/questions/PartTwo";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Page() {
-  let [loading, setLoading] = useState(false);
-  let [keyWord, setKeyWord] = useState("");
-  let [info, setInfo] = useState([
-    {
-      id: 1,
-      question: "",
-    },
-  ]);
-  let [partThreeInfo, setPartThreeInfo] = useState([
-    {
-      id: 1,
-      question: "",
-    },
-  ]);
+  const dispatch = useDispatch();
 
-  const notify = (text) => toast(text);
+  let questions = useSelector((state) => state.PartTwo);
 
-  let handleUpload = async () => {
-    setLoading(true);
-    let data = await API.part_two({
-      part_two: {
-        questions: [
-          ...info.map((el) => {
-            if (el?.question?.length > 0) {
-              return {
-                question: el.question,
-              };
-            }
-          }),
-        ],
+  useEffect(() => {
+    dispatch(getPartTwo());
+  }, []);
 
-        thinkingTime: {
-          count: 60,
-          count_type: "Sekund",
-        },
-        speakingTime: {
-          count: 120,
-          count_type: "Secund",
-        },
-        isPremium: false,
-      },
-      part_three: {
-        questions: [
-          ...partThreeInfo.map((el) => {
-            if (el.question.length > 0) {
-              return {
-                question: el.question,
-              };
-            }
-          }),
-        ],
+  console.log(questions);
 
-        thinkingTime: {
-          count: 5,
-          count_type: "Sekund",
-        },
-        speakingTime: {
-          count: 30,
-          count_type: "Secund",
-        },
-        isPremium: false,
-      },
-    });
+  if (questions.loading) {
+    return (
+      <div>
+        <h2 className="text-xl text-bold text-center p-8  underline">
+          Loading...
+        </h2>
+      </div>
+    );
+  }
 
-    if (data.success) {
-      notify("Part two question was saved!");
-      setInfo([
-        {
-          id: 1,
-          question: "",
-        },
-      ]);
-      setPartThreeInfo([
-        {
-          id: 1,
-          question: "",
-        },
-      ]);
-    }
-    setLoading(false);
-  };
+  if (questions.message.length > 0) {
+    return (
+      <div>
+        <h1>{questions.message}</h1>
+      </div>
+    );
+  }
 
-  return (
-    <section>
-      <ToastContainer />
+  if (questions.questions.length == 0) {
+    return (
       <div className="container">
         <div>
           <h2 className="text-xl text-bold text-center p-8  underline">
-            Add Your{" "}
-            <span className="text-slate-600 text-2xl">
-              Second Part Questions
-            </span>{" "}
-            Here
+            Part One Questions
           </h2>
         </div>
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-4 ">
-          {info.map((el, i) => {
-            return (
-              <div key={i}>
-                <TextFields setInfo={setInfo} info={info} i={i} />
-              </div>
-            );
-          })}
+        <div className="p-[20px] pb-[50px] flex flex-row justify-end">
+          <Link
+            href="/second_task/add"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Add New
+          </Link>
         </div>
-        <br />
-        <div className="flex flex-row align-center justify-end">
-          <Box className="flex flex-row  align-center">
-            <Tooltip title="Remove One Last Question">
-              <span className="flex flex-row align-center justify-center">
-                <IconButton
-                  disabled={info.length != 0 ? false : true}
-                  onClick={() => {
-                    if (info.length > 0) {
-                      info.pop();
-                      setInfo([...info]);
-                    }
-                  }}
-                  color="delete"
-                >
-                  <HighlightOffIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title="Add New Question">
-              <span className="flex flex-row align-center justify-center">
-                <IconButton
-                  disabled={info.length <= 4 ? false : true}
-                  onClick={() => {
-                    if (info.length <= 4) {
-                      setInfo([
-                        ...info,
-                        {
-                          id: info.length + 1,
-                        },
-                      ]);
-                    }
-                  }}
-                  color="primary"
-                >
-                  <ControlPointIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            {/* <Tooltip title="Save New Question">
-              <span className="flex flex-row align-center justify-center">
-                <CustomModal
-                  loading={loading}
-                  info={info}
-                  handleUpload={handleUpload}
-                  setKeyWord={setKeyWord}
-                  keyWord={keyWord}
-                />
-              </span>
-            </Tooltip> */}
-          </Box>
-        </div>
-        <div>
-          <h2 className="text-xl text-bold text-center p-8  underline">
-            Add Your{" "}
-            <span className="text-slate-600 text-2xl">
-              Third Part Questions
-            </span>{" "}
-            Here
-          </h2>
-        </div>
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-4 ">
-          {partThreeInfo.map((el, i) => {
-            return (
-              <div key={i}>
-                <TextFields
-                  setInfo={setPartThreeInfo}
-                  info={partThreeInfo}
-                  i={i}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <br />
-        <div className="flex flex-row align-center justify-end">
-          <Box className="flex flex-row  align-center">
-            <Tooltip title="Remove One Last Question">
-              <span className="flex flex-row align-center justify-center">
-                <IconButton
-                  disabled={partThreeInfo.length != 0 ? false : true}
-                  onClick={() => {
-                    if (partThreeInfo.length > 0) {
-                      partThreeInfo.pop();
-                      setPartThreeInfo([...partThreeInfo]);
-                    }
-                  }}
-                  color="delete"
-                >
-                  <HighlightOffIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title="Add New Question">
-              <span className="flex flex-row align-center justify-center">
-                <IconButton
-                  disabled={partThreeInfo.length <= 4 ? false : true}
-                  onClick={() => {
-                    if (partThreeInfo.length <= 4) {
-                      setPartThreeInfo([
-                        ...partThreeInfo,
-                        {
-                          id: partThreeInfo.length + 1,
-                        },
-                      ]);
-                    }
-                  }}
-                  color="primary"
-                >
-                  <ControlPointIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title="Save New Question">
-              <span className="flex flex-row align-center justify-center">
-                <LoadingButton
-                  onClick={handleUpload}
-                  loading={loading}
-                  size="small"
-                  disabled={
-                    info.length + partThreeInfo.length < 3 ? true : false
-                  }
-                  variant="outlined"
-                >
-                  Save
-                </LoadingButton>
-              </span>
-            </Tooltip>
-          </Box>
-        </div>
+        <h2 className="text-xl text-bold text-center p-8  underline">
+          Question Not Found
+        </h2>
       </div>
-    </section>
+    );
+  }
+
+  return (
+    <div className="container">
+      <div>
+        <h2 className="text-xl text-bold text-center p-8  underline">
+          Add your first part questions here
+        </h2>
+      </div>
+      <div className="p-[20px] pb-[50px] flex flex-row justify-end">
+        <Link
+          href="/second_task/add"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Add New
+        </Link>
+      </div>
+      {questions.questions.map((el, i) => {
+        return (
+          <div key={el._id}>
+            <PartTwoList el={el} i={i} />
+          </div>
+        );
+      })}
+    </div>
   );
 }

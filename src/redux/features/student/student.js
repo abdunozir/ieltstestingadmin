@@ -20,27 +20,6 @@ const studentSlice = createSlice({
   name: "student",
   initialState,
   reducers: {
-    loadingStudent() {
-      return {
-        ...state,
-        loading: true,
-        message: null,
-      };
-    },
-    loadingStudentSuccess() {
-      return {
-        ...state,
-        loading: fasle,
-        message: null,
-      };
-    },
-    loadingStudentError() {
-      return {
-        ...state,
-        loading: fasle,
-        message: actions.payload.message,
-      };
-    },
     editStudent(state, actions) {
       return {
         loading: fasle,
@@ -62,13 +41,6 @@ const studentSlice = createSlice({
         ],
       };
     },
-    getStudent(state, payload) {
-      return {
-        message: null,
-        loading: false,
-        student: [...actions.payload.student],
-      };
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchStudents.pending, (state) => {
@@ -85,12 +57,6 @@ const studentSlice = createSlice({
   },
 });
 
-export const {
-  editStudent,
-  loadingStudent,
-  loadingStudentError,
-  loadingStudentSuccess,
-  getStudent,
-} = studentSlice.actions;
+export const { editStudent } = studentSlice.actions;
 
 export default studentSlice.reducer;

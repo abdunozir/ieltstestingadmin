@@ -35,11 +35,31 @@ export async function POST(req) {
 
 export async function GET() {
   try {
+    await connect();
     let partOne = await PartOne.find();
 
-    NextResponse.json({
+    return NextResponse.json({
       succes: true,
       partOne: partOne,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      error: true,
+      message: error.message,
+    });
+  }
+}
+
+export async function DELETE(req) {
+  try {
+    await connect();
+    let url = new URL(req.url);
+    let id = url.searchParams.get("id");
+    let deleted = await PartOne.deleteOne({ _id: id });
+
+    return NextResponse.json({
+      isDeleted: true,
+      deleted: deleted,
     });
   } catch (error) {
     return NextResponse.json({

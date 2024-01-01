@@ -20,7 +20,7 @@ export default function TextFields({ setInfo, info, i }) {
         ]);
       }}
       fullWidth
-      label={`Part Third Question - ${i + 1}`}
+      label={`Write A Question - ${i + 1}`}
       id="fullWidth"
     />
   );
